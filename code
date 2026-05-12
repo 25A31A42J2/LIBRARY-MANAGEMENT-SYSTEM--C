@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Book {
+    int id;
+    char name[50];
+    char author[50];
+    int quantity;
+};
+
+void addBook() {
+    struct Book b;
+
+    FILE *file;
+    file = fopen("books.txt", "a");
+
+    printf("Enter Book ID: ");
+    scanf("%d", &b.id);
+
+    getchar();
+
+    printf("Enter Book Name: ");
+    fgets(b.name, sizeof(b.name), stdin);
+
+    printf("Enter Author Name: ");
+    fgets(b.author, sizeof(b.author), stdin);
+
+    printf("Enter Quantity: ");
+    scanf("%d", &b.quantity);
+
+    fprintf(file, "%d|%s|%s|%d\n",
+            b.id,
+            b.name,
+            b.author,
+            b.quantity);
+
+    fclose(file);
+
+    printf("Book Added Successfully!\n");
+}
+
+void viewBooks() {
+    FILE *file;
+    char line[200];
+
+    file = fopen("books.txt", "r");
+
+    if(file == NULL) {
+        printf("No books found!\n");
+        return;
+    }
+
+    printf("\n===== Book List =====\n");
+
+    while(fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+
+    fclose(file);
+}
+
+int main() {
+    int choice;
+
+    while(1) {
+        printf("\n===== Library Management System =====\n");
+        printf("1. Add Book\n");
+        printf("2. View Books\n");
+        printf("3. Exit\n");
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                addBook();
+                break;
+
+            case 2:
+                viewBooks();
+                break;
+
+            case 3:
+                printf("Thank You!\n");
+                exit(0);
+
+            default:
+                printf("Invalid Choice!\n");
+        }
+    }
+
+    return 0;
+}
